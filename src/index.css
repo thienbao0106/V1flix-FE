@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@500&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  margin: 0;
+  font-family: "Nunito", Helvetica, Arial, sans-serif;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 6.5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.first {
+  text-shadow: 1px 0 #8789c0, -1px 0 #8789c0, 0 1px #8789c0, 0 -1px #8789c0;
+}
+.second {
+  text-shadow: 1px 0 #5dfdcb, -1px 0 #5dfdcb, 0 1px #5dfdcb, 0 -1px #5dfdcb;
+}
+.third {
+  text-shadow: 1px 0 #7cc6fe, -1px 0 #7cc6fe, 0 1px #7cc6fe, 0 -1px #7cc6fe;
+}
+.other {
+  text-shadow: 1px 0 #c2cae8, -1px 0 #c2cae8, 0 1px #c2cae8, 0 -1px #c2cae8;
+}
+
+.swiper-pagination {
+  text-align: left !important;
+  padding-left: 2rem;
+}
+
+.swiper-pagination-bullet {
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+}
+.swiper-pagination-bullet-active {
+  background-color: #e89b26 !important;
+}
+
+@media only screen and (max-width: 600px) {
+  /* For tablets: */
+  .swiper-pagination {
+    padding-left: 0.5rem;
+  }
+  .swiper-pagination-bullet {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+@media only screen and (max-width: 1000px) {
+  /* For tablets: */
+  .swiper-pagination {
+    padding-left: 0.5rem;
+  }
+  .swiper-pagination-bullet {
+    width: 1.2rem !important;
+    height: 1.2rem !important;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  /* For tablets: */
+  .swiper-pagination {
+    padding-left: 0.8rem;
+  }
+  .swiper-pagination-bullet {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}
+
+/* Handle animation for login and it's messed up with react-hook-form*/
+input[type="text"]:valid ~ span,
+input[type="text"]:focus ~ span,
+input[type="password"]:focus ~ span,
+input[type="password"]:valid ~ span,
+input[type="email"]:valid ~ span,
+input[type="email"]:focus ~ span {
+  color: white;
+  font-size: 0.65em;
+  transform: translateX(10px) translateY(-7px);
+  padding: 0 5px;
+  background: #1d2b3a;
+  border-left: 1px solid #e89b26;
+  border-right: 1px solid #e89b26;
+  letter-spacing: 0.2em;
+}
