@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 //component
 import Info from "./Info";
 //lib
@@ -10,14 +10,20 @@ import { IEpisodes, ISeries } from "../../interface";
 import { handleUrl, slugifyString } from "../../utils/HandleString";
 import { useQuery } from "@tanstack/react-query";
 //context
-import { TopTrendingContext } from "../../context/TopTrendingContext";
 import TopAnimeCard from "../../components/Card/TopAnimeCard";
 //libs
-
 import DefaultLoading from "../../components/Loading/DefaultLoading";
 import ErrorLoading from "../../components/Error/ErrorLoading";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { fetchFilmsTrending } from "../../redux/slices/filmSlice";
 
 const Film: React.FC<any> = () => {
+  //Redux
+  const listTrending = useAppSelector((state) => state.films.listFilms);
+  const reduxDispatch = useAppDispatch();
+  useEffect(() => {
+    reduxDispatch(fetchFilmsTrending(new AbortController()));
+  }, []);
   let film,
     currentEp: any = {},
     video: any = {};
@@ -25,7 +31,6 @@ const Film: React.FC<any> = () => {
     "title",
     "ep",
   ]);
-  const { listTrending } = useContext(TopTrendingContext);
 
   console.log("re-render film");
   //Will improve/optimize this bunch of code soon
@@ -81,7 +86,13 @@ const Film: React.FC<any> = () => {
                     <AdvancedVideo cldVid={video} controls />
                   ) : (
                     <section>
-                      <video width="1280" height="720" controls preload="auto" controlsList="nodownload">
+                      <video
+                        width="1280"
+                        height="720"
+                        controls
+                        preload="auto"
+                        controlsList="nodownload"
+                      >
                         <source
                           aria-label="720p"
                           src={`https://www.googleapis.com/drive/v3/files/${

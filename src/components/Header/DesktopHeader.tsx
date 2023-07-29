@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useContext } from "react";
+import React, { useReducer, useState, useContext, useEffect } from "react";
 //Component
 import { AiOutlineSearch, AiOutlineUser } from "react-icons/ai";
 import { CiDark, CiLight } from "react-icons/ci";
@@ -9,13 +9,15 @@ import { NavLink, Link } from "react-router-dom";
 import { IReducer } from "../../interface";
 import { reducer } from "./reducer";
 //Data
-import { listNavMenu } from "./data";
 import { ISeries } from "../../interface";
 import useSearchSeries from "./hook";
 //Context
-import { ThemeContext } from "../../context/ThemeContext";
+
 import { account } from "../../utils/Storage";
 import { slugifyString } from "../../utils/HandleString";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { fetchGeners } from "../../redux/slices/genersSlice";
+import { changeTheme } from "../../redux/slices/themeSlice";
 // import { UserContext } from "../../context/UserContext";
 
 const initState: Hover = {
@@ -24,14 +26,44 @@ const initState: Hover = {
 };
 let count = 0;
 const DesktopHeader: React.FC = () => {
+  //For Redux
+  const geners = useAppSelector((state) => state.geners.listGeners);
+  const theme = useAppSelector((state) => state.theme.mode);
+
+  const reduxDispatch = useAppDispatch();
+  useEffect(() => {
+    reduxDispatch(fetchGeners(new AbortController()));
+  }, []);
+
+  const listNavMenu: NavMenu[] = [
+    {
+      id: "Nav02",
+      title: "Genre",
+      url: "/home",
+      subMenu: geners.map((gener: any) => {
+        return {
+          id: gener.id,
+          title: gener.name,
+          url: `/genre/${gener.name.toLowerCase()}`,
+        };
+      }),
+    },
+
+    {
+      id: "Nav04",
+      title: "Newest",
+      url: "/newest",
+    },
+  ];
+
+  //For hover
   const [loading, dispatch] = useReducer<
     (state: Hover, action: IReducer) => any
   >(reducer, initState);
   const [searchInput, setSearchInput] = useState<string>("");
   const [userMenu, setUserMenu] = useState(false);
   const result = useSearchSeries(searchInput);
-  const { theme, toggleTheme } = useContext(ThemeContext);
-  console.log(listNavMenu);
+
   return (
     <>
       <div className="px-10 flex text-white">
@@ -163,7 +195,7 @@ const DesktopHeader: React.FC = () => {
             </div>
             <div
               className="flex justify-center items-center bg-opacity-40 px-2 py-2 rounded-l-md cursor-pointer"
-              onClick={() => toggleTheme()}
+              onClick={() => reduxDispatch(changeTheme(""))}
             >
               {theme === "dark" ? <CiDark size={20} /> : <CiLight size={20} />}
             </div>

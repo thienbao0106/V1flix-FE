@@ -3,15 +3,19 @@ import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 //context
-import { ThemeContext } from "../../context/ThemeContext";
+
 //components
 import { Form, Input } from "../../components/Form/Form";
 import { CiDark, CiLight } from "react-icons/ci";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { changeTheme } from "../../redux/slices/themeSlice";
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 const Register = () => {
   const [loading, setLoading] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  //Redux stuff
+  const theme = useAppSelector((state) => state.theme.mode);
+  const dispatch = useAppDispatch();
   const onSubmit = async (data: any) => {
     console.log(data.confirmed_password === data.password);
     if (data.confirmed_password !== data.password) {
@@ -47,7 +51,7 @@ const Register = () => {
           <div className=" flex items-center justify-between">
             <span
               className="hover:cursor-pointer hover:text-secondColor"
-              onClick={() => toggleTheme()}
+              onClick={() => dispatch(changeTheme(""))}
             >
               {theme === "dark" ? <CiDark size={40} /> : <CiLight size={40} />}
             </span>

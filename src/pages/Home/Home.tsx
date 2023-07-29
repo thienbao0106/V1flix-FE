@@ -10,19 +10,27 @@ import TopAnimeCard from "../../components/Card/TopAnimeCard";
 import "swiper/css";
 import "swiper/css/pagination";
 //Context
-import { TopTrendingContext } from "../../context/TopTrendingContext";
+
 import Banner from "./Banner";
 import { useQuery } from "@tanstack/react-query";
 import DefaultLoading from "../../components/Loading/DefaultLoading";
 import ErrorLoading from "../../components/Error/ErrorLoading";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { fetchFilmsTrending } from "../../redux/slices/filmSlice";
 
 const Home: React.FC = () => {
+  //Redux
+  const listTrending = useAppSelector((state) => state.films.listFilms);
+  const reduxDispatch = useAppDispatch();
+  useEffect(() => {
+    reduxDispatch(fetchFilmsTrending(new AbortController()));
+  }, []);
+
   const [series, setSeries] = useState<ISeries[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(0);
   //Limit Page
   const limitPage = 4;
-  const { listTrending } = useContext(TopTrendingContext);
   const { isLoading, isError } = useQuery({
     queryFn: async () => {
       const responseSeries = await axios.get(
@@ -71,7 +79,7 @@ const Home: React.FC = () => {
             ))}
           </aside>
           <aside className="flex justify-center items-center">
-            {currentPage < totalPage - 1 && (
+            {currentPage < totalPage && (
               <button
                 className=" bg-secondColor font-bold rounded-md py-2 px-5 mt-14"
                 onClick={() => handleSeeMore()}

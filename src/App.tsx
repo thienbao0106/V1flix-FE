@@ -2,9 +2,10 @@ import { Suspense, lazy, useContext } from "react";
 //Components
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import BaseLayout from "./layout/BaseLayout";
-import { ThemeContext } from "./context/ThemeContext";
+
 import { account } from "./utils/Storage";
 import DefaultLoading from "./components/Loading/DefaultLoading";
+import { useAppSelector } from "./redux/hook";
 
 //Pages
 const Error: React.FC = lazy(() => import("./pages/Error/Error"));
@@ -18,7 +19,7 @@ const Genre: React.FC = lazy(() => import("./pages/Genre/Genre"));
 const Newest: React.FC = lazy(() => import("./pages/Newest/Newest"));
 
 const App: React.FC = () => {
-  const { theme } = useContext(ThemeContext);
+  const theme = useAppSelector((state) => state.theme.mode);
   return (
     <main className={`${theme === "dark" ? " bg-bgColor" : "bg-white"}`}>
       <BrowserRouter>

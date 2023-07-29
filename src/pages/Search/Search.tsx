@@ -3,23 +3,30 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 //data
-import { filters } from "./data";
 import axios from "axios";
 import { ISeries } from "../../interface";
 //components
 import Card from "../../components/Card/Card";
 import TopAnimeCard from "../../components/Card/TopAnimeCard";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { fetchGeners } from "../../redux/slices/genersSlice";
 //css
 let render = 0;
 const CSS =
   "bg-opacity-40 bg-gray-500 p-2 rounded-md lg:w-fit focus:outline-none focus:bg-gray-700";
 
 const Search: React.FC = () => {
+  //Redux stuff
+  const geners = useAppSelector((state) => state.geners.listGeners);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchGeners(new AbortController()));
+  }, []);
+
   const { keyword } = useParams();
   const [filter, setFilter] = useState<string>(keyword || "");
   const [result, setResult] = useState<ISeries[]>([]);
   const { register, handleSubmit } = useForm();
-
   useEffect(() => {
     const controller = new AbortController();
     const fetchData = async () => {
@@ -71,6 +78,28 @@ const Search: React.FC = () => {
     console.log(response.data.series);
     setResult(response.data.series);
   };
+
+  const filters: any[] = [
+    {
+      id: 1,
+      category: "genre",
+      list: geners,
+    },
+    {
+      id: 2,
+      category: "status",
+      list: [
+        {
+          id: 10001,
+          name: "completed",
+        },
+        {
+          id: 10002,
+          name: "releasing",
+        },
+      ],
+    },
+  ];
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 //Components
 import { AiOutlineSearch, AiOutlineUser } from "react-icons/ai";
@@ -9,16 +9,48 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { Hover, NavMenu, NavItem } from "./interface";
 
 //Data
-import { listNavMenu } from "./data";
 import useSearchSeries from "./hook";
 import { ISeries } from "../../interface";
 //storage
 import { account } from "../../utils/Storage";
 //Context
-import { ThemeContext } from "../../context/ThemeContext";
+
 import { slugifyString } from "../../utils/HandleString";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { fetchGeners } from "../../redux/slices/genersSlice";
+import { changeTheme } from "../../redux/slices/themeSlice";
 
 const MobileHeader: React.FC = () => {
+  //For Redux
+  const geners = useAppSelector((state) => state.geners.listGeners);
+  //Redux stuff
+  const theme = useAppSelector((state) => state.theme.mode);
+  const reduxDispatch = useAppDispatch();
+  useEffect(() => {
+    reduxDispatch(fetchGeners(new AbortController()));
+  }, []);
+
+  const listNavMenu: NavMenu[] = [
+    {
+      id: "Nav02",
+      title: "Genre",
+      url: "/home",
+      subMenu: geners.map((gener: any) => {
+        return {
+          id: gener.id,
+          title: gener.name,
+          url: `/genre/${gener.name.toLowerCase()}`,
+        };
+      }),
+    },
+
+    {
+      id: "Nav04",
+      title: "Newest",
+      url: "/newest",
+    },
+  ];
+
   const [subMenu, setSubMenu] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>(() => {
     return "";
@@ -30,7 +62,7 @@ const MobileHeader: React.FC = () => {
     return { id: "", isLoading: false };
   });
   const result = useSearchSeries(searchInput);
-  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
     <>
       <section
@@ -59,7 +91,10 @@ const MobileHeader: React.FC = () => {
             size={15}
           />
           <TbMinusVertical size={15} />
-          <div className="cursor-pointer" onClick={() => toggleTheme()}>
+          <div
+            className="cursor-pointer"
+            onClick={() => reduxDispatch(changeTheme(""))}
+          >
             {theme === "dark" ? <CiDark size={15} /> : <CiLight size={15} />}
           </div>
           {!account.get("username") ? (

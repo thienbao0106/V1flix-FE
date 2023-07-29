@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 //lib
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -7,14 +7,19 @@ import { AiOutlineHome } from "react-icons/ai";
 import { Form, Input } from "../../components/Form/Form";
 import { CiDark, CiLight } from "react-icons/ci";
 //context
-import { ThemeContext } from "../../context/ThemeContext";
+
 import { account } from "../../utils/Storage";
+import { useAppDispatch, useAppSelector } from "../../redux/hook";
+import { changeTheme } from "../../redux/slices/themeSlice";
 
 let render = 0;
 const Login: React.FC = () => {
   document.title = "Login";
+  //Redux stuff
+  const theme: any = useAppSelector((state) => state.theme.mode);
+  const dispatch = useAppDispatch();
+
   const [loading, setLoading] = useState<boolean>(false);
-  const { theme, toggleTheme } = useContext(ThemeContext);
   console.log("re-render: " + render++);
 
   //sleep function
@@ -50,7 +55,9 @@ const Login: React.FC = () => {
           <div className=" flex items-center justify-between">
             <span
               className="hover:cursor-pointer hover:text-secondColor"
-              onClick={() => toggleTheme()}
+              onClick={() => {
+                dispatch(changeTheme(""));
+              }}
             >
               {theme === "dark" ? <CiDark size={40} /> : <CiLight size={40} />}
             </span>
