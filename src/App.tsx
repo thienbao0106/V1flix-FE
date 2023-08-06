@@ -20,6 +20,8 @@ const Newest: React.FC = lazy(() => import("./pages/Newest/Newest"));
 
 const App: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.mode);
+  const user = useAppSelector((state) => state.account);
+
   return (
     <main className={`${theme === "dark" ? " bg-bgColor" : "bg-white"}`}>
       <BrowserRouter>
@@ -30,7 +32,7 @@ const App: React.FC = () => {
 
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
-              {!account.get("username") && (
+              {user.username === "" && (
                 <Route path="/login" element={<Login />} />
               )}
               <Route path="/register" element={<Register />} />

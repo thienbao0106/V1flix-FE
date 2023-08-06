@@ -19,12 +19,14 @@ import { slugifyString } from "../../utils/HandleString";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { fetchGeners } from "../../redux/slices/genersSlice";
 import { changeTheme } from "../../redux/slices/themeSlice";
+import { handleLogout } from "../../redux/slices/accountSlice";
 
 const MobileHeader: React.FC = () => {
   //For Redux
   const geners = useAppSelector((state) => state.geners.listGeners);
-  //Redux stuff
   const theme = useAppSelector((state) => state.theme.mode);
+  const user = useAppSelector((state) => state.account);
+
   const reduxDispatch = useAppDispatch();
   useEffect(() => {
     reduxDispatch(fetchGeners(new AbortController()));
@@ -97,10 +99,13 @@ const MobileHeader: React.FC = () => {
           >
             {theme === "dark" ? <CiDark size={15} /> : <CiLight size={15} />}
           </div>
-          {!account.get("username") ? (
-            <button className="text-sm bg-transparent outline outline-offset-2 outline-outColor py-0.5 rounded-md px-2">
+          {user.username === "" ? (
+            <Link
+              to="/login"
+              className="text-sm bg-transparent outline outline-offset-2 outline-outColor py-0.5 rounded-md px-2"
+            >
               Sign-in
-            </button>
+            </Link>
           ) : (
             <div
               onClick={() => setUserMenu(!userMenu)}
@@ -120,16 +125,15 @@ const MobileHeader: React.FC = () => {
                   <ul className="bg-mainColor rounded-md">
                     <li className="cursor-pointer p-2 hover:bg-secondColor hover:rounded-md truncate ">
                       <a
-                        href={`/profile/${account.get("username")}`}
+                        href={`/profile/${user.username}`}
                         className="max-w-full text-center line-clamp-1"
                       >
-                        {account.get("username")}
+                        {user.username}
                       </a>
                     </li>
                     <li
                       onClick={() => {
-                        account.remove();
-                        window.location.reload();
+                        reduxDispatch(handleLogout());
                       }}
                       className="cursor-pointer p-2 hover:bg-secondColor hover:rounded-md"
                     >

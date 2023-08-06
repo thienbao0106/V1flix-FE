@@ -12,23 +12,22 @@ import { reducer } from "./reducer";
 import { ISeries } from "../../interface";
 import useSearchSeries from "./hook";
 //Context
-
-import { account } from "../../utils/Storage";
 import { slugifyString } from "../../utils/HandleString";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { fetchGeners } from "../../redux/slices/genersSlice";
 import { changeTheme } from "../../redux/slices/themeSlice";
-// import { UserContext } from "../../context/UserContext";
+import { handleLogout } from "../../redux/slices/accountSlice";
 
 const initState: Hover = {
   isLoading: false,
   id: "",
 };
-let count = 0;
+
 const DesktopHeader: React.FC = () => {
   //For Redux
   const geners = useAppSelector((state) => state.geners.listGeners);
   const theme = useAppSelector((state) => state.theme.mode);
+  const user = useAppSelector((state) => state.account);
 
   const reduxDispatch = useAppDispatch();
   useEffect(() => {
@@ -185,7 +184,7 @@ const DesktopHeader: React.FC = () => {
           <aside
             aria-label="sign-in"
             className={`w-1/3 flex-row flex gap-3 ${
-              !account.get("username") ? "justify-center" : "justify-between"
+              user.username === "" ? "justify-center" : "justify-between"
             } `}
           >
             <div
@@ -199,7 +198,7 @@ const DesktopHeader: React.FC = () => {
             >
               {theme === "dark" ? <CiDark size={20} /> : <CiLight size={20} />}
             </div>
-            {!account.get("username") ? (
+            {user.username === "" ? (
               <Link
                 to="/login"
                 className="flex justify-center items-center bg-transparent outline outline-offset-2 outline-outColor py-2 rounded-lg px-2 w-full"
@@ -225,16 +224,15 @@ const DesktopHeader: React.FC = () => {
                     <ul className="bg-mainColor -ml-4 rounded-md p-2 ">
                       <li className="cursor-pointer p-2 hover:bg-secondColor hover:rounded-md">
                         <Link
-                          to={`/profile/${account.get("username")}`}
+                          to={`/profile/${user.username}`}
                           className="text-center"
                         >
-                          {account.get("username")}
+                          {user.username}
                         </Link>
                       </li>
                       <li
                         onClick={() => {
-                          account.remove();
-                          window.location.reload();
+                          reduxDispatch(handleLogout());
                         }}
                         className="cursor-pointer p-2 hover:bg-secondColor hover:rounded-md"
                       >

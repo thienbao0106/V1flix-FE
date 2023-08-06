@@ -70,7 +70,11 @@ const Info: React.FC<ISeries> = ({
       <main className="flex lg:flex-row md:flex-row flex-col w-full gap-x-4 bg-opacityText p-4 rounded-lg">
         <section aria-label="image" className="basis-1/5 ">
           {imgStatus ? (
-            <AdvancedImage cldImg={myImage} alt={`img-${id}`} className="w-full md:h-full h-[200px] object-cover" />
+            <AdvancedImage
+              cldImg={myImage}
+              alt={`img-${id}`}
+              className="w-full md:h-full h-[200px] object-cover"
+            />
           ) : (
             <img
               loading="lazy"
@@ -80,7 +84,10 @@ const Info: React.FC<ISeries> = ({
             />
           )}
         </section>
-        <section aria-label="content" className="basis-4/5 space-y-4 h-full xl:mt-0 mt-5">
+        <section
+          aria-label="content"
+          className="basis-4/5 space-y-4 h-full xl:mt-0 mt-5"
+        >
           <div className="flex justify-between">
             <h3 className="lg:text-4xl text-xl font-bold">{title}</h3>
             {account.get("username") && (
@@ -131,11 +138,17 @@ const Info: React.FC<ISeries> = ({
               </li>
               <li>
                 Generes:
-                {genersList.map((genere: any, index: number) => (
-                  <span key={index} className="text-secondColor font-bold">
-                    {` ${genere.name}${index === genersList.length - 1 ? "" : ", "} `}
-                  </span>
-                ))}
+                {genersList.length > 0 ? (
+                  genersList.map((genere: any, index: number) => (
+                    <span key={index} className="text-secondColor font-bold">
+                      {` ${genere.name}${
+                        index === genersList.length - 1 ? "" : ", "
+                      } `}
+                    </span>
+                  ))
+                ) : (
+                  <span>{` Upcoming`}</span>
+                )}
               </li>
               <li>
                 Status:
@@ -145,7 +158,6 @@ const Info: React.FC<ISeries> = ({
                     : null}
                 </span>
               </li>
-              {status === "ongoing" ? <li>`Status: ${status}`</li> : null}
             </ul>
           </div>
         </section>

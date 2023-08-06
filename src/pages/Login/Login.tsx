@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 //lib
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineHome } from "react-icons/ai";
 //components
 import { Form, Input } from "../../components/Form/Form";
@@ -11,6 +11,7 @@ import { CiDark, CiLight } from "react-icons/ci";
 import { account } from "../../utils/Storage";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { changeTheme } from "../../redux/slices/themeSlice";
+import { setUserLogin } from "../../redux/slices/accountSlice";
 
 let render = 0;
 const Login: React.FC = () => {
@@ -18,6 +19,7 @@ const Login: React.FC = () => {
   //Redux stuff
   const theme: any = useAppSelector((state) => state.theme.mode);
   const dispatch = useAppDispatch();
+  const navigation = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
   console.log("re-render: " + render++);
@@ -35,14 +37,9 @@ const Login: React.FC = () => {
     if (response.data.status === "failed") {
       alert("Account isn't right");
     } else {
-      console.log(response.data);
-      const { username } = data;
-
       alert("Account is right");
-      account.set("username", username);
-      account.set("idUser", response.data.id);
-
-      window.location.href = "/";
+      dispatch(setUserLogin(response.data));
+      navigation("/");
     }
     setLoading(false);
   };

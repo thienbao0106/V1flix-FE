@@ -39,8 +39,9 @@ const Home: React.FC = () => {
         }/series?limitPage=${limitPage}&currentPage=${currentPage}`
       );
       if (responseSeries) {
-        setSeries(responseSeries.data.series);
-        setTotalPage(responseSeries.data.totalPage);
+        const { series, totalPage } = responseSeries.data;
+        setSeries(series);
+        setTotalPage(totalPage);
       }
       return;
     },
@@ -79,7 +80,7 @@ const Home: React.FC = () => {
             ))}
           </aside>
           <aside className="flex justify-center items-center">
-            {currentPage < totalPage && (
+            {currentPage < totalPage - 1 && (
               <button
                 className=" bg-secondColor font-bold rounded-md py-2 px-5 mt-14"
                 onClick={() => handleSeeMore()}

@@ -2,11 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import genersReducer from "./slices/genersSlice";
 import themeReducer from "./slices/themeSlice";
 import filmReducer from "./slices/filmSlice";
+import accountReducer from "./slices/accountSlice";
 export const store = configureStore({
   reducer: {
     geners: genersReducer,
     theme: themeReducer,
     films: filmReducer,
+    account: accountReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
