@@ -5,15 +5,13 @@ import { AdvancedImage } from "@cloudinary/react";
 
 import { CiPlay1 } from "react-icons/ci";
 import Details from "./Details";
-//lib
-import { gsap, CSSPlugin } from "gsap";
 //interface
 import { IImages, ISeries } from "../../interface";
 //utils
 import { slugifyString } from "../../utils/HandleString";
 import PlaceHolder from "../../assets/placeholder_image.jpg";
 import useCheckImage from "../../hook/useCheckImage";
-import { checkVisibility } from "../../utils/HandlePost";
+// import { checkVisibility } from "../../utils/HandlePost";
 
 const Card: React.FC<ISeries | any> = ({
   id,
@@ -22,6 +20,7 @@ const Card: React.FC<ISeries | any> = ({
   type,
   total_episodes,
   status,
+  ep_num,
 }) => {
   const imageName = images.filter(
     (image: IImages) => image.type === "thumbnail"
@@ -65,7 +64,7 @@ const Card: React.FC<ISeries | any> = ({
       >
         {images.length > 0 && (
           <>
-            <a href={`/watch?title=${slugifyString(title)}&ep=1`}>
+            <a href={`/watch?title=${slugifyString(title)}&ep=${ep_num}`}>
               {imgStatus ? (
                 <AdvancedImage ref={cardRef} cldImg={myImage} />
               ) : (

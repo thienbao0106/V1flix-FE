@@ -90,11 +90,11 @@ const Search: React.FC = () => {
       category: "status",
       list: [
         {
-          id: 10001,
+          id: "completed",
           name: "completed",
         },
         {
-          id: 10002,
+          id: "releasing",
           name: "releasing",
         },
       ],
@@ -164,7 +164,7 @@ const Search: React.FC = () => {
               </aside>
             ) : (
               <div className="w-full flex h-44 justify-center items-center">
-                <h1 className="font-bold text-4xl">{`Can't find the data for ${keyword}`}</h1>
+                <h1 className="font-bold text-4xl">{`Can't find the data for ${filter}`}</h1>
               </div>
             )}
           </aside>

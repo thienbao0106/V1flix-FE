@@ -23,10 +23,10 @@ const Newest = () => {
       </header>
       <section className="w-full grid xl:grid-cols-6 lg:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-4 lg:mt-4 mt-7">
         {data.episodes.map((episode: any) => {
-          console.log(episode);
+          console.log(episode.ep_num);
           return (
             <div>
-              <Card {...episode.series} />
+              <Card ep_num={episode.ep_num} {...episode.series} />
               <div>
                 Episode:{" "}
                 <span className="text-secondColor font-bold">
