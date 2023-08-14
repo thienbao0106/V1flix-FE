@@ -7,8 +7,3 @@ export function setMetaTag(property: string, content: string) {
 }
 
 // Call the function to set OG tags
-setMetaTag("og:title", "Your Page Title");
-setMetaTag("og:description", "Your Page Description");
-setMetaTag("og:image", "URL_TO_YOUR_IMAGE");
-setMetaTag("og:url", "URL_OF_YOUR_PAGE");
-setMetaTag("og:type", "website");

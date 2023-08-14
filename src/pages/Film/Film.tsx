@@ -63,20 +63,8 @@ const Film: React.FC<any> = () => {
       }
     setMetaTag("og:title", `${title} - ${epNum}`);
     setMetaTag("og:description", film.description);
-    // setMetaTag("og:image", "URL_TO_YOUR_IMAGE");
-    // setMetaTag("og:url", "URL_OF_YOUR_PAGE");
     setMetaTag("og:type", "website");
     setMetaTag("og:site_name", "V1flix");
-
-    // document
-    //   .querySelector("#og-title")
-    //   ?.setAttribute("content", `${title} - ${epNum}`);
-    // document
-    //   .querySelector("#og-description")
-    //   ?.setAttribute("content", film.description);
-    // document
-    //   .querySelector("#name-description")
-    //   ?.setAttribute("content", film.description);
   }
 
   if (isLoading)
