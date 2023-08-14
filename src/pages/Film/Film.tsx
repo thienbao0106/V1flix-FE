@@ -70,6 +70,9 @@ const Film: React.FC<any> = () => {
     document
       .querySelector("#og-description")
       ?.setAttribute("content", film.description);
+    document
+      .querySelector("#name-description")
+      ?.setAttribute("content", film.description);
   }
 
   if (isLoading)
