@@ -51,6 +51,7 @@ const Film: React.FC<any> = () => {
       episodes.find((episode: IEpisodes) => episode.ep_num === parseInt(epNum));
 
     document.title = `${title} - ${epNum}`;
+
     //differentiate cloudinary and google drive.
     if (currentEp)
       if (currentEp.source.includes(`${titleName}_ep${epNum}`)) {
@@ -59,6 +60,16 @@ const Film: React.FC<any> = () => {
         });
         console.log(video);
       }
+    //change the meta
+    document
+      .querySelector("#og-url")
+      ?.setAttribute("content", window.location.href);
+    document
+      .querySelector("#og-title")
+      ?.setAttribute("content", `${title} - ${epNum}`);
+    document
+      .querySelector("#og-description")
+      ?.setAttribute("content", film.description);
   }
 
   if (isLoading)

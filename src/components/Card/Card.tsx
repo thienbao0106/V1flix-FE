@@ -48,7 +48,7 @@ const Card: React.FC<ISeries | any> = ({
   //     window.removeEventListener("scroll", handleScroll);
   //   };
   // }, []);
-
+  console.log(ep_num);
   return (
     <div className="flex flex-col w-full">
       <div
@@ -64,7 +64,11 @@ const Card: React.FC<ISeries | any> = ({
       >
         {images.length > 0 && (
           <>
-            <a href={`/watch?title=${slugifyString(title)}&ep=${ep_num}`}>
+            <a
+              href={`/watch?title=${slugifyString(title)}&ep=${
+                ep_num ? ep_num : 1
+              }`}
+            >
               {imgStatus ? (
                 <AdvancedImage ref={cardRef} cldImg={myImage} />
               ) : (
