@@ -16,6 +16,7 @@ import DefaultLoading from "../../components/Loading/DefaultLoading";
 import ErrorLoading from "../../components/Error/ErrorLoading";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { fetchFilmsTrending } from "../../redux/slices/filmSlice";
+import { setMetaTag } from "../../utils/HandleMeta";
 
 const Film: React.FC<any> = () => {
   //Redux
@@ -60,16 +61,22 @@ const Film: React.FC<any> = () => {
         });
         console.log(video);
       }
+    setMetaTag("og:title", `${title} - ${epNum}`);
+    setMetaTag("og:description", film.description);
+    // setMetaTag("og:image", "URL_TO_YOUR_IMAGE");
+    // setMetaTag("og:url", "URL_OF_YOUR_PAGE");
+    setMetaTag("og:type", "website");
+    setMetaTag("og:site_name", "V1flix");
 
-    document
-      .querySelector("#og-title")
-      ?.setAttribute("content", `${title} - ${epNum}`);
-    document
-      .querySelector("#og-description")
-      ?.setAttribute("content", film.description);
-    document
-      .querySelector("#name-description")
-      ?.setAttribute("content", film.description);
+    // document
+    //   .querySelector("#og-title")
+    //   ?.setAttribute("content", `${title} - ${epNum}`);
+    // document
+    //   .querySelector("#og-description")
+    //   ?.setAttribute("content", film.description);
+    // document
+    //   .querySelector("#name-description")
+    //   ?.setAttribute("content", film.description);
   }
 
   if (isLoading)
