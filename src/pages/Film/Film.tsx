@@ -61,9 +61,9 @@ const Film: React.FC<any> = () => {
         console.log(video);
       }
     //change the meta
-    document
-      .querySelector("#og-url")
-      ?.setAttribute("content", window.location.href);
+    // document
+    //   .querySelector("#og-url")
+    //   ?.setAttribute("content", window.location.href);
     document
       .querySelector("#og-title")
       ?.setAttribute("content", `${title} - ${epNum}`);
