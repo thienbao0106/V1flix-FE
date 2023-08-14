@@ -62,15 +62,15 @@ const Film: React.FC<any> = () => {
         console.log(video);
       }
     //change the meta
-    // document
-    //   .querySelector("#og-url")
-    //   ?.setAttribute("content", window.location.href);
-    // document
-    //   .querySelector("#og-title")
-    //   ?.setAttribute("content", `${title} - ${epNum}`);
-    // document
-    //   .querySelector("#og-description")
-    //   ?.setAttribute("content", film.description);
+    document
+      .querySelector("#og-url")
+      ?.setAttribute("content", window.location.href);
+    document
+      .querySelector("#og-title")
+      ?.setAttribute("content", `${title} - ${epNum}`);
+    document
+      .querySelector("#og-description")
+      ?.setAttribute("content", film.description);
   }
 
   if (isLoading)
@@ -79,22 +79,6 @@ const Film: React.FC<any> = () => {
 
   return (
     <>
-      <head>
-        <meta property="og:type" content="website" />
-        <meta
-          id="og-title"
-          property="og:title"
-          content={`${data.data.series.title} - ${epNum}`}
-        />
-        <meta id="og-site_name" property="og:title" content="V1flix" />
-        <meta
-          id="og-description"
-          property="og:description"
-          content={data.data.series.description}
-        />
-        <meta content="#43B581" data-react-helmet="true" name="theme-color" />
-      </head>
-
       <section className="px-8 text-white pt-5 space-y-5">
         <header>
           <h1 className="lg:text-2xl text-4xl font-bold">
