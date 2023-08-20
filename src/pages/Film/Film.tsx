@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 //component
 import Info from "./Info";
 //lib
 import axios from "axios";
-import { CloudinaryVideo } from "@cloudinary/url-gen";
+import { CloudinaryImage, CloudinaryVideo } from "@cloudinary/url-gen";
 import { AdvancedVideo } from "@cloudinary/react";
 //interface
-import { IEpisodes, ISeries } from "../../interface";
+import { IEpisodes, IImages } from "../../interface";
 import { handleUrl, slugifyString } from "../../utils/HandleString";
 import { useQuery } from "@tanstack/react-query";
 //context
@@ -16,9 +16,12 @@ import DefaultLoading from "../../components/Loading/DefaultLoading";
 import ErrorLoading from "../../components/Error/ErrorLoading";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { fetchFilmsTrending } from "../../redux/slices/filmSlice";
-import { setMetaTag } from "../../utils/HandleMeta";
+import throttle from "lodash/throttle";
+import useCheckImage from "../../hook/useCheckImage";
+import { debounce } from "lodash";
 
 const Film: React.FC<any> = () => {
+  const videoRef: any = useRef(null);
   //Redux
   const listTrending = useAppSelector((state) => state.films.listFilms);
   const reduxDispatch = useAppDispatch();
@@ -27,23 +30,29 @@ const Film: React.FC<any> = () => {
   }, []);
   let film,
     currentEp: any = {},
-    video: any = {};
+    video: any = {},
+    imageUrl: string = "",
+    imageStatus: boolean = false;
   const [titleName, epNum] = handleUrl(window.location.href.split("?")[1], [
     "title",
     "ep",
   ]);
 
-  console.log("re-render film");
   //Will improve/optimize this bunch of code soon
-  const { isLoading, data, isSuccess, isFetching, isError } = useQuery({
-    queryFn: async () => {
-      return await axios.get(
-        `${import.meta.env.VITE_USER_URL}/series/film/${titleName}`
-      );
-    },
-    refetchOnWindowFocus: false,
-    staleTime: Infinity,
-  });
+  const { isLoading, data, isSuccess, isFetching, isError } = useQuery(
+    ["film"],
+    {
+      queryFn: async () => {
+        console.log("test fetching data");
+
+        return await axios.get(
+          `${import.meta.env.VITE_USER_URL}/series/film/${titleName}`
+        );
+      },
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    }
+  );
   if (isSuccess) {
     film = data.data.series;
     const { episodes, title } = data.data.series;
@@ -61,6 +70,16 @@ const Film: React.FC<any> = () => {
         });
         console.log(video);
       }
+
+    //getting cloudinary image
+    const imageName = film.images.find(
+      (image: IImages) => image.type === "card"
+    )?.name;
+    const myImage = new CloudinaryImage(`/anime/card/${imageName}`, {
+      cloudName: `${import.meta.env.VITE_USER_CLOUDINARY}`,
+    });
+    imageUrl = myImage.createCloudinaryURL();
+
     //change the meta
     document
       .querySelector("#og-url")
@@ -71,12 +90,23 @@ const Film: React.FC<any> = () => {
     document
       .querySelector("#og-description")
       ?.setAttribute("content", film.description);
+    document.querySelector("#og-image")?.setAttribute("content", imageUrl);
+    document.querySelector("#og-image-alt")?.setAttribute("content", imageName);
   }
-
   if (isLoading)
     return <DefaultLoading msg={"Loading the anime, please wait for it..."} />;
   if (isError) return <ErrorLoading msg={"Error while getting data!"} />;
 
+  const updateTime = () => {
+    debounce(() => {
+      const video = videoRef.current;
+      console.log("test");
+      //prevent getting the data in the first render
+      if (video && video?.ended && video?.currentTime > 0) {
+        console.log("test");
+      }
+    }, 1000);
+  };
   return (
     <>
       <section className="px-8 text-white pt-5 space-y-5">
@@ -99,6 +129,8 @@ const Film: React.FC<any> = () => {
                   ) : (
                     <section>
                       <video
+                        ref={videoRef}
+                        onTimeUpdate={() => updateTime()}
                         width="1280"
                         height="720"
                         controls
@@ -152,7 +184,7 @@ const Film: React.FC<any> = () => {
               </ul>
             </aside>
             <aside className="w-full" aria-label="info-film">
-              <Info {...film} />
+              <Info {...film} imageUrl={imageUrl} imageStatus={imageStatus} />
             </aside>
           </section>
           <section aria-label="trending" className="basis-2/6 pt-8">

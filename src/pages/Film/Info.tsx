@@ -12,9 +12,8 @@ import { AdvancedImage } from "@cloudinary/react";
 import useCheckImage from "../../hook/useCheckImage";
 import PlaceHolder from "../../assets/placeholder_image.jpg";
 
-const Info: React.FC<ISeries> = ({
+const Info: React.FC<any> = ({
   id,
-  images,
   description,
   title,
   type,
@@ -22,6 +21,7 @@ const Info: React.FC<ISeries> = ({
   total_episodes,
   status,
   alt_title,
+  imageUrl,
 }) => {
   const [settingMenu, setSettingMenu] = useState<boolean>(false);
   const [isSeeMore, setSeeMore] = useState<boolean>(true);
@@ -48,19 +48,14 @@ const Info: React.FC<ISeries> = ({
       controller.abort();
     };
   }, [id]);
-  const imageName = images.filter((image: IImages) => image.type === "card")[0]
-    ?.name;
-
-  const myImage = new CloudinaryImage(`/anime/card/${imageName}`, {
-    cloudName: `${import.meta.env.VITE_USER_CLOUDINARY}`,
-  });
-  const imgStatus = useCheckImage(myImage.createCloudinaryURL());
+  console.log(imageUrl);
+  const imgStatus = useCheckImage(imageUrl);
 
   return (
     <>
       {settingMenu && (
         <UserFilmSetting
-          images={images}
+          images={imageUrl}
           title={title}
           status={status}
           id={id}
@@ -70,8 +65,8 @@ const Info: React.FC<ISeries> = ({
       <main className="flex lg:flex-row md:flex-row flex-col w-full gap-x-4 bg-opacityText p-4 rounded-lg">
         <section aria-label="image" className="basis-1/5 ">
           {imgStatus ? (
-            <AdvancedImage
-              cldImg={myImage}
+            <img
+              src={imageUrl}
               alt={`img-${id}`}
               className="w-full md:h-full h-[200px] object-cover"
             />
