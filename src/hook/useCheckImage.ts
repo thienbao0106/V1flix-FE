@@ -8,7 +8,7 @@ const useCheckImage = (url: string) => {
     const checkImage = async () => {
       const getImage = await axios.get(url, {
         signal: controller.signal,
-        timeout: 500,
+        timeout: 20000,
       });
       if (getImage) {
         setImgStatus(true);
