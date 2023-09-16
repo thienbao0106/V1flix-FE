@@ -20,6 +20,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { fetchGeners } from "../../redux/slices/genersSlice";
 import { changeTheme } from "../../redux/slices/themeSlice";
 import { handleLogout } from "../../redux/slices/accountSlice";
+import { useDebounce } from "../../hook/useDebounce";
 
 const MobileHeader: React.FC = () => {
   //For Redux
@@ -57,13 +58,15 @@ const MobileHeader: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>(() => {
     return "";
   });
+  const debounceValue = useDebounce(searchInput, 2000);
+  console.log(debounceValue);
   const [searchbar, setSearchbar] = useState<boolean>(false);
   const [userMenu, setUserMenu] = useState<boolean>(false);
   const [loading, setLoading] = useState<Hover>(() => {
     console.log("Test loading");
     return { id: "", isLoading: false };
   });
-  const result = useSearchSeries(searchInput);
+  const result = useSearchSeries(debounceValue);
 
   return (
     <>

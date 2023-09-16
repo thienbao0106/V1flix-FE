@@ -16,9 +16,8 @@ import DefaultLoading from "../../components/Loading/DefaultLoading";
 import ErrorLoading from "../../components/Error/ErrorLoading";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { fetchFilmsTrending } from "../../redux/slices/filmSlice";
-import throttle from "lodash/throttle";
+
 import useCheckImage from "../../hook/useCheckImage";
-import { debounce } from "lodash";
 
 const Film: React.FC<any> = () => {
   const videoRef: any = useRef(null);
@@ -98,14 +97,12 @@ const Film: React.FC<any> = () => {
   if (isError) return <ErrorLoading msg={"Error while getting data!"} />;
 
   const updateTime = () => {
-    debounce(() => {
-      const video = videoRef.current;
+    const video = videoRef.current;
+    console.log("test");
+    /*Todo: Add view when user finish the show*/
+    if (video && video?.ended && video?.currentTime > 0) {
       console.log("test");
-      //prevent getting the data in the first render
-      if (video && video?.ended && video?.currentTime > 0) {
-        console.log("test");
-      }
-    }, 1000);
+    }
   };
   return (
     <>
