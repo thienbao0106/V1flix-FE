@@ -31,23 +31,6 @@ const Card: React.FC<ISeries | any> = ({
   const cardRef = useRef<any>(null);
   const imgStatus = useCheckImage(myImage.createCloudinaryURL());
 
-  // useEffect(() => {
-  //   gsap.registerPlugin(CSSPlugin);
-  //   const handleScroll = () => {
-  //     const check = checkVisibility(cardRef);
-  //     if (check) {
-  //       gsap.fromTo(
-  //         cardRef.current,
-  //         { opacity: 0 },
-  //         { opacity: 1, duration: 0.2 }
-  //       );
-  //     }
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
   console.log(ep_num);
   return (
     <div className="flex flex-col w-full">
@@ -74,7 +57,7 @@ const Card: React.FC<ISeries | any> = ({
               ) : (
                 <img
                   loading="lazy"
-                  className="lg:h-[348px]"
+                  className="xl:h-[430px] lg:h-[348px]"
                   src={PlaceHolder}
                   alt="placeholder-img"
                 />

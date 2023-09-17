@@ -1,4 +1,3 @@
-import React from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { CloudinaryImage } from "@cloudinary/url-gen";
 
@@ -27,7 +26,7 @@ const BannerCard = ({ images, id, title, description }: any) => {
       ) : (
         <img
           loading="lazy"
-          className="h-[369px] w-[725px]"
+          className={`xl:h-[450px] lg:static absolute inset-0 h-80 w-full lg:basis-1/2 lg:w-1/2 lg:h-1/2 lg:rounded-3xl lg:shadow-black lg:shadow-sm lg:opacity-100 opacity-60`}
           src={PlaceHolder}
           alt="placeholder-img"
         />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Details from "./Details";
 import { FiEye } from "react-icons/fi";
 import { IImages, ISeries } from "../../interface";
@@ -51,7 +51,7 @@ const TopAnimeCard: React.FC<ISeries | any> = ({
         ) : (
           <img
             loading="lazy"
-            className="h-[108px]"
+            className="xl:h-[150px] lg:h-[108px]"
             src={PlaceHolder}
             alt="placeholder-img"
           />

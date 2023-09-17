@@ -58,15 +58,13 @@ const MobileHeader: React.FC = () => {
   const [searchInput, setSearchInput] = useState<string>(() => {
     return "";
   });
-  const debounceValue = useDebounce(searchInput, 2000);
-  console.log(debounceValue);
   const [searchbar, setSearchbar] = useState<boolean>(false);
   const [userMenu, setUserMenu] = useState<boolean>(false);
-  const [loading, setLoading] = useState<Hover>(() => {
-    console.log("Test loading");
-    return { id: "", isLoading: false };
-  });
-  const result = useSearchSeries(debounceValue);
+  const loading = { id: "", isLoading: false };
+
+  const debounceValue = useDebounce(searchInput, 500);
+  console.log(debounceValue);
+  const { series, isLoading } = useSearchSeries(debounceValue);
 
   return (
     <>
@@ -178,36 +176,40 @@ const MobileHeader: React.FC = () => {
           </aside>
           <aside aria-label="result" className="h-3/4">
             {searchInput !== "" ? (
-              result.length > 0 ? (
-                <ul className="rounded-b-md list">
-                  {result.map((item: ISeries, index: number) => {
-                    return (
-                      <li
-                        key={index}
-                        className="bg-mainColor text-left py-2 px-2 even:bg-black-500"
-                      >
-                        <a
-                          className="hover:text-secondColor"
-                          href={`/watch?title=${slugifyString(
-                            item.title
-                          )}&ep=1`}
+              isLoading ? (
+                <div>Loading....</div>
+              ) : series !== null ? (
+                series.length > 0 ? (
+                  <ul className="rounded-b-md list">
+                    {series.map((item: ISeries, index: number) => {
+                      return (
+                        <li
+                          key={index}
+                          className="bg-mainColor text-left py-2 px-2 even:bg-black-500"
                         >
-                          {item.title}
-                        </a>
+                          <a
+                            className="hover:text-secondColor"
+                            href={`/watch?title=${slugifyString(
+                              item.title
+                            )}&ep=1`}
+                          >
+                            {item.title}
+                          </a>
+                        </li>
+                      );
+                    })}
+                    <a href={`/search/${searchInput}`}>
+                      <li className="bg-secondColor rounded-b-md text-center font-bold py-2 px-2">
+                        See more
                       </li>
-                    );
-                  })}
-                  <a href={`/search/${searchInput}`}>
-                    <li className="bg-secondColor rounded-b-md text-center font-bold py-2 px-2">
-                      See more
-                    </li>
-                  </a>
-                </ul>
-              ) : (
-                <div className="text-center py-2 px-2 rounded-b-md bg-secondColor">
-                  Can't find the data
-                </div>
-              )
+                    </a>
+                  </ul>
+                ) : (
+                  <div className="bg-yellow-500 bg-opacity-50  text-center py-2 px-2 rounded-b-md">
+                    Can't find the data
+                  </div>
+                )
+              ) : null
             ) : null}
           </aside>
         </section>
